@@ -9,6 +9,9 @@ def get_user_choice():
     user_choice = input("Pick rock, paper or scissors: ")
     return user_choice
 
+computer_choice = get_computer_choice()
+user_choice = get_user_choice()
+
 def get_winner(computer_choice, user_choice):
     if computer_choice == user_choice:
         print("It is a tie!")

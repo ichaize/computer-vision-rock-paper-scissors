@@ -54,17 +54,19 @@ class RockPaperScissors:
     def get_prediction(self):
         highest_probability_index = np.argmax(self.run_model())
         if highest_probability_index == 0:
-            self.user_choice = "Rock"
+            return "Rock"
         elif highest_probability_index == 1:
-            self.user_choice = "Paper"
+            return "Paper"
         elif highest_probability_index == 2:
-            self.user_choice = "Scissors"
+            return "Scissors"
         else:
-            self.user_choice = "Nothing"
+            return "Nothing"
 
     def get_computer_choice(self):
         options = ["Rock", "Paper", "Scissors"]
-        self.computer_choice = random.choice(options)
+        computer_choice = random.choice(options)
+        print(f"The computer chose {computer_choice}")
+        return computer_choice
         
         
     def get_winner(self, computer_choice, user_choice):
@@ -73,40 +75,42 @@ class RockPaperScissors:
         elif computer_choice == "Rock":
             if user_choice == "Paper":
                 print("You won!")
-                self.user_wins += 1
+                return "user"
             else:
                 print("You lost")
-                self.computer_wins += 1
+                return "computer"
         elif computer_choice == "Paper":
             if user_choice == "Scissors":
                 print("You won!")
-                self.user_wins += 1
+                return "user"
             else:
                 print("You lost")
-                self.computer_wins += 1
+                return "computer"
         elif computer_choice == "Scissors":
             if user_choice == "Rock":
                 print("You won!")
-                self.user_wins += 1
+                return "user"
             else:
                 print("You lost")
-                self.computer_wins += 1
-
+                return "computer"
 
     def play(self):
-        while True:
-            if self.computer_wins == 3:
-                print("The computer won!")
-                break
-            elif self.user_wins == 3:
-                print("You won!")
-                break
-            else:
-                self.get_winner(self.computer_choice, self.user_choice)
-                print(self.computer_wins, self.user_wins)
+            if self.get_winner(self.computer_choice, self.user_choice) == "user":
+                self.user_wins += 1
+            elif self.get_winner(self.computer_choice, self.user_choice) == "computer":
+                self.computer_wins += 1
+            print(self.computer_wins, self.user_wins)
 
 game_one = RockPaperScissors()
-game_one.play()
+while True:
+    if game_one.computer_wins == 3:
+            print("The computer won!")
+            break
+    elif game_one.user_wins == 3:
+            print("You won!")
+            break
+    else:
+        game_one.play()
 
 """ def check_keep_playing():
     if c_wins == 3:

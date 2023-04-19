@@ -36,7 +36,8 @@ def play():
     user_choice = get_user_choice()
     get_winner(computer_choice, user_choice)
 
-play()
+if __name__ == "__main__": 
+    play()
 
 
     

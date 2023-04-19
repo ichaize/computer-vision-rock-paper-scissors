@@ -68,7 +68,7 @@ class RockPaperScissors:
         print(f"The computer chose {computer_choice}")
         return computer_choice
         
-        
+    ### for some reason the printed bit of this (e.g. "You lost" prints twice each round, I have no idea why. The scores in play() only print once ###    
     def get_winner(self, computer_choice, user_choice):
         if computer_choice == user_choice:
             print("It is a tie!")

@@ -11,8 +11,6 @@ class RockPaperScissors:
     def __init__(self):
         self.computer_wins = 0
         self.user_wins = 0
-        self.computer_choice = self.get_computer_choice()
-        self.user_choice = self.get_prediction()
 
     def alt_timer(self):
         print("Counting down: 3...")
@@ -95,9 +93,12 @@ class RockPaperScissors:
                 return "computer"
 
     def play(self):
-            if self.get_winner(self.computer_choice, self.user_choice) == "user":
+            computer_choice = self.get_computer_choice()
+            user_choice = self.get_prediction()
+            winner = self.get_winner(computer_choice, user_choice) 
+            if winner == "user":
                 self.user_wins += 1
-            elif self.get_winner(self.computer_choice, self.user_choice) == "computer":
+            elif winner == "computer":
                 self.computer_wins += 1
             print(self.computer_wins, self.user_wins)
 

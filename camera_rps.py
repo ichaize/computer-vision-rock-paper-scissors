@@ -35,7 +35,9 @@ class RockPaperScissors:
             cv2.imshow('frame', frame)
             # Press q to close the window
             if cv2.waitKey(1) & 0xFF == ord('q'):
-                break             
+                break                
+    
+    def stop_video(self):
         # After the loop release the cap object
         cap.release()
         # Destroy all the windows
@@ -89,9 +91,11 @@ game_one = RockPaperScissors()
 while True:
     if game_one.computer_wins == 3:
             print("The computer won!")
+            game_one.stop_video()
             break
     elif game_one.user_wins == 3:
             print("You won!")
+            game_one.stop_video()
             break
     else:
         game_one.play()

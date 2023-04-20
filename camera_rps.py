@@ -5,6 +5,8 @@ import time
 import random 
 model = load_model('keras_model.h5')
 cap = cv2.VideoCapture(0)
+frame_width = cap.get(3)
+frame_height = cap.get(4)
 data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
 class RockPaperScissors:
@@ -14,24 +16,30 @@ class RockPaperScissors:
         self.move_list = ["Rock", "Paper", "Scissors", "Nothing"]
         self.result = None
 
-    def countdown(self):
-        print("Counting down: 3...")
-        time.sleep(1)
-        print("2...")
-        time.sleep(1)
-        print("1...")
-        time.sleep(1)
-
     def run_model(self):
         start_time = time.time()
+        countdown_start_time = 0
+        n_second = 0
+        total_seconds = 4
+        seconds_string = '3321'
+        time_elapsed = 0.0
+        
         while time.time() < start_time + 5:
             ret, frame = cap.read()
             resized_frame = cv2.resize(frame, (224, 224), interpolation = cv2.INTER_AREA)
             image_np = np.array(resized_frame)
             normalized_image = (image_np.astype(np.float32) / 127.0) - 1 # Normalize the image
             data[0] = normalized_image
-            prediction = np.argmax(model.predict(data))
-            self.result = self.move_list[prediction]
+            if n_second < total_seconds:
+                cv2.putText(img = frame, text = seconds_string[n_second], org = (int(frame_width/2 - 20),int(frame_height/2)), fontScale = 6, fontFace = cv2.FONT_HERSHEY_COMPLEX, color = (255, 0, 0), thickness = 5)
+                time_elapsed = (time.time() - countdown_start_time)
+                if time_elapsed >= 1:
+                    n_second += 1
+                    time_elapsed = 0
+                    countdown_start_time = time.time()
+            else:
+                prediction = np.argmax(model.predict(data))
+                self.result = self.move_list[prediction]
             cv2.imshow('frame', frame)
             # Press q to close the window
             if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -50,6 +58,9 @@ class RockPaperScissors:
         return computer_choice
         
     def get_winner(self, computer_choice, user_choice):
+        if user_choice == "Nothing":
+            print("Could not identify your choice")
+            return "nothing"
         if computer_choice == user_choice:
             print("It is a tie!")
         elif computer_choice == "Rock":
@@ -82,6 +93,8 @@ class RockPaperScissors:
                 self.user_wins += 1
             elif winner == "computer":
                 self.computer_wins += 1
+            elif winner == "nothing":
+                pass
             print(self.computer_wins, self.user_wins)
         
 
@@ -99,7 +112,6 @@ while True:
             break
     else:
         game_one.play()
-        time.sleep(5)
 
 """ def check_keep_playing():
     if c_wins == 3:
